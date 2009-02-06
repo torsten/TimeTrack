@@ -226,7 +226,6 @@
 
 - (void)timerTick:(NSTimer*)pTimer
 {
-  NSLog(@"tick");
   mElapsedTime += [pTimer timeInterval];
   
   [mStatusItem setTitle:[self elapsedTimeAsString]];
