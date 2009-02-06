@@ -123,9 +123,9 @@
 
 - (void)updateMenu
 {
-  int minutes = round(mElapsedTime/60.0);
-  int hours   = round(mElapsedTime/60.0/60.0);
-
+  int hours   = floor(mElapsedTime/60.0/60.0);
+  int minutes = round((mElapsedTime-((hours*60)*60.0))/60.0);
+  
   if(mRuning)
   {
     [mStatusItem setLength:55.0];
