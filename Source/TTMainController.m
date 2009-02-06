@@ -28,66 +28,97 @@
 @implementation TTMainController
 
 
+#pragma mark NSObject
+
+- (id)init
+{
+  if((self = [super init]))
+  {
+    mElapsedTime = 0.0;
+  }
+  return self;
+}
+
+
 #pragma mark NSApplication Delegate
 
 
-- (void) openWebsite:(id)sender {
-  NSURL *url = [NSURL URLWithString:@"http://th30z.netsons.org"];
-  [[NSWorkspace sharedWorkspace] openURL:url];
-  [url release];
-}
-
-- (void) openFinder:(id)sender {
-  [[NSWorkspace sharedWorkspace] launchApplication:@"Finder"];
-}
-
-- (void) actionQuit:(id)sender {
-  [NSApp terminate:sender];
-}
-
-- (NSMenu *) createMenu {
-  NSZone *menuZone = [NSMenu menuZone];
-  NSMenu *menu = [[NSMenu allocWithZone:menuZone] init];
-  NSMenuItem *menuItem;
-
-  // Add To Items
-  menuItem = [menu addItemWithTitle:@"Open Website"
-    action:@selector(openWebsite:)
-    keyEquivalent:@""];
-  [menuItem setTarget:self];
-
-  menuItem = [menu addItemWithTitle:@"Open Finder"
-    action:@selector(openFinder:)
-    keyEquivalent:@""];
-  [menuItem setTarget:self];
-
-  // Add Separator
-  [menu addItem:[NSMenuItem separatorItem]];
-
-  // Add Quit Action
-  menuItem = [menu addItemWithTitle:@"Quit"
-    action:@selector(actionQuit:)
-    keyEquivalent:@""];
-  [menuItem setToolTip:@"Click to Quit this App"];
-  [menuItem setTarget:self];
-
-  return menu;
-}
-
 - (void) applicationDidFinishLaunching:(NSNotification *)pNotification
 {
+  [self readDefaults];
+  
   NSMenu *menu = [self createMenu];
 
-  _statusItem = [[[NSStatusBar systemStatusBar]
-    statusItemWithLength:55.0] retain];
-  [_statusItem setMenu:menu];
-  [_statusItem setHighlightMode:YES];
-  [_statusItem setToolTip:@"Test Tray"];
-  // [_statusItem setImage:[NSImage imageNamed:@"trayIcon"]];
-  [_statusItem setTitle:@"02:45"];
+  mStatusItem = [[[NSStatusBar systemStatusBar]
+    // statusItemWithLength:55.0] retain];
+    statusItemWithLength:NSSquareStatusItemLength] retain];
+
+  [mStatusItem setMenu:menu];
+  [mStatusItem setHighlightMode:YES];
+  [mStatusItem setToolTip:@"TimeTrack"];
+  // [mStatusItem setTitle:@"00:00"];
+  [mStatusItem setImage:[NSImage imageNamed:@"mono"]];
+  [mStatusItem setAlternateImage:[NSImage imageNamed:@"mono-inverted"]];
 
   [menu release];
 }
+
+
+- (void)readDefaults
+{
+  NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+  
+  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    @"ElapsedTime", [NSNumber numberWithDouble:0.0], nil];
+  
+  [defs registerDefaults:dict];
+  
+  mElapsedTime = [[defs objectForKey:@"ElapsedTime"] doubleValue];
+}
+
+- (void)saveDefaults
+{
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)quitAction:(id)pSender
+{
+  [NSApp terminate:pSender];
+}
+
+- (void)startOrPauseTimer:(id)pSender
+{
+}
+
+- (NSMenu *)createMenu
+{
+  NSMenu *menu = [[NSMenu alloc] init];
+  NSMenuItem *menuItem;
+
+  mStartPauseItem = [menu addItemWithTitle:@"Start"
+    action:@selector(startOrPauseTimer:)
+    keyEquivalent:@""];
+  [mStartPauseItem setTarget:self];
+  [mStartPauseItem retain];
+  
+  mResetItem = [menu addItemWithTitle:@"Reset"
+    action:@selector(resetTimer:)
+    keyEquivalent:@""];
+  [mResetItem setTarget:self];
+  [mResetItem retain];
+  
+  // Add Separator
+  [menu addItem:[NSMenuItem separatorItem]];
+  
+  // Add Quit Action
+  menuItem = [menu addItemWithTitle:@"Quit TimeTrack"
+    action:@selector(quitAction:)
+    keyEquivalent:@""];
+  [menuItem setTarget:self];
+  
+  return menu;
+}
+
 
 
 @end

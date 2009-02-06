@@ -10,6 +10,8 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		E56694170F3C88A900A318BC /* TTMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56694160F3C88A900A318BC /* TTMainController.m */; };
+		E56694310F3C9E7600A318BC /* mono.png in Resources */ = {isa = PBXBuildFile; fileRef = E56694300F3C9E7600A318BC /* mono.png */; };
+		E56694350F3C9F0000A318BC /* mono-inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = E56694340F3C9F0000A318BC /* mono-inverted.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		8D1107320486CEB800E47090 /* TimeTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56694150F3C88A900A318BC /* TTMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTMainController.h; path = Source/TTMainController.h; sourceTree = SOURCE_ROOT; };
 		E56694160F3C88A900A318BC /* TTMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTMainController.m; path = Source/TTMainController.m; sourceTree = SOURCE_ROOT; };
+		E56694300F3C9E7600A318BC /* mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mono.png; path = Icon/mono.png; sourceTree = SOURCE_ROOT; };
+		E56694340F3C9F0000A318BC /* mono-inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mono-inverted.png"; path = "Icon/mono-inverted.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E56694340F3C9F0000A318BC /* mono-inverted.png */,
+				E56694300F3C9E7600A318BC /* mono.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -153,6 +159,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E56694310F3C9E7600A318BC /* mono.png in Resources */,
+				E56694350F3C9F0000A318BC /* mono-inverted.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

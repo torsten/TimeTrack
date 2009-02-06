@@ -27,10 +27,10 @@
 
 @interface TTMainController : NSObject
 {
-  
-@private
-    NSStatusItem *_statusItem;
-
+  NSStatusItem *mStatusItem;
+  NSTimeInterval mElapsedTime;
+  NSMenuItem *mStartPauseItem;
+  NSMenuItem *mResetItem;
 }
 
 @end
