@@ -31,6 +31,7 @@
   NSTimeInterval mElapsedTime;
   NSMenuItem *mStartPauseItem;
   NSMenuItem *mResetItem;
+  BOOL mRuning;
 }
 
 @end

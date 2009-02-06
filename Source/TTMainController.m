@@ -35,6 +35,7 @@
   if((self = [super init]))
   {
     mElapsedTime = 0.0;
+    mRuning = NO;
   }
   return self;
 }
@@ -59,8 +60,8 @@
   // [mStatusItem setTitle:@"00:00"];
   [mStatusItem setImage:[NSImage imageNamed:@"mono"]];
   [mStatusItem setAlternateImage:[NSImage imageNamed:@"mono-inverted"]];
-
-  [menu release];
+  
+  [self updateMenu];
 }
 
 
@@ -78,6 +79,7 @@
 
 - (void)saveDefaults
 {
+  // Write mElapsedTime back.
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -86,23 +88,103 @@
   [NSApp terminate:pSender];
 }
 
-- (void)startOrPauseTimer:(id)pSender
+- (void)startOrPauseTimerAction:(id)pSender
 {
+  if(mRuning)
+  {
+    mRuning = NO;
+    // Stop timer
+  }
+  else
+  {
+    // Start timer
+    mRuning = YES;
+  }
+  
+  [self updateMenu];
+  
+}
+
+- (void)resetElapsedTimeAction:(id)pSender
+{
+  // [self stopTimer];
+  mElapsedTime = 0.0;
+  // mRuning = NO;
+  // [self saveDefaults];
+  [self updateMenu];
+}
+
+- (void)updateMenu
+{
+  NSLog(@"update");
+  
+  if(mRuning)
+  {
+    NSLog(@"running");
+    
+    [mStatusItem setLength:55.0];
+    [mStatusItem setImage:nil];
+    [mStatusItem setAlternateImage:nil];
+    [mStatusItem setTitle:@"00:00"];
+    
+    [mResetItem setEnabled:NO];
+    
+    [mStartPauseItem setTitle:@"Pause"];
+    [mStartPauseItem setAttributedTitle:nil];
+  }
+  else
+  {
+    NSLog(@"nawt running");
+    
+    [mStatusItem setLength:NSSquareStatusItemLength];
+    [mStatusItem setImage:[NSImage imageNamed:@"mono"]];
+    [mStatusItem setAlternateImage:[NSImage imageNamed:@"mono-inverted"]];
+    [mStatusItem setTitle:nil];
+    
+    [mResetItem setEnabled:YES];
+    
+    if(mElapsedTime == 0.0)
+    {
+      NSLog(@"0.0");
+      
+      [mStartPauseItem setTitle:@"Start"];
+      [mStartPauseItem setAttributedTitle:nil];
+    }
+    else
+    {
+      NSLog(@"nawt 0.0");
+      
+      NSMutableAttributedString *attrString =
+          [[[NSMutableAttributedString alloc]
+          initWithString:@"Continue  03:21"] autorelease];
+      
+      [attrString addAttribute:NSForegroundColorAttributeName
+          value:[NSColor grayColor] range:NSMakeRange(10, 5)];
+
+      [attrString addAttribute:NSFontAttributeName
+          value:[NSFont menuBarFontOfSize:-1.0] range:NSMakeRange(0, 15)];
+
+      [mStartPauseItem setAttributedTitle:attrString];
+    }
+  }
 }
 
 - (NSMenu *)createMenu
 {
-  NSMenu *menu = [[NSMenu alloc] init];
+  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  [menu setAutoenablesItems:NO];
+  
   NSMenuItem *menuItem;
 
-  mStartPauseItem = [menu addItemWithTitle:@"Start"
-    action:@selector(startOrPauseTimer:)
+  mStartPauseItem = [menu addItemWithTitle:@"..."
+    action:@selector(startOrPauseTimerAction:)
     keyEquivalent:@""];
   [mStartPauseItem setTarget:self];
   [mStartPauseItem retain];
+
   
   mResetItem = [menu addItemWithTitle:@"Reset"
-    action:@selector(resetTimer:)
+    action:@selector(resetElapsedTimeAction:)
     keyEquivalent:@""];
   [mResetItem setTarget:self];
   [mResetItem retain];
