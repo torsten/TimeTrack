@@ -34,4 +34,10 @@
   BOOL mRuning;
 }
 
+- (void)readDefaults;
+- (void)saveDefaults;
+- (void)updateMenu;
+- (NSMenu *)createMenu;
+
+
 @end

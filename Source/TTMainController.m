@@ -51,15 +51,11 @@
   NSMenu *menu = [self createMenu];
 
   mStatusItem = [[[NSStatusBar systemStatusBar]
-    // statusItemWithLength:55.0] retain];
     statusItemWithLength:NSSquareStatusItemLength] retain];
 
   [mStatusItem setMenu:menu];
   [mStatusItem setHighlightMode:YES];
   [mStatusItem setToolTip:@"TimeTrack"];
-  // [mStatusItem setTitle:@"00:00"];
-  [mStatusItem setImage:[NSImage imageNamed:@"mono"]];
-  [mStatusItem setAlternateImage:[NSImage imageNamed:@"mono-inverted"]];
   
   [self updateMenu];
 }
@@ -79,12 +75,21 @@
 
 - (void)saveDefaults
 {
-  // Write mElapsedTime back.
-  [[NSUserDefaults standardUserDefaults] synchronize];
+  NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+  
+  [defs setObject:[NSNumber numberWithDouble:mElapsedTime]
+      forKey:@"ElapsedTime"];
+  
+  [defs synchronize];
 }
 
 - (void)quitAction:(id)pSender
 {
+  if(mRuning)
+  {
+    // TODO: save state
+  }
+  
   [NSApp terminate:pSender];
 }
 
@@ -109,19 +114,15 @@
 {
   // [self stopTimer];
   mElapsedTime = 0.0;
-  // mRuning = NO;
-  // [self saveDefaults];
+  
+  [self saveDefaults];
   [self updateMenu];
 }
 
 - (void)updateMenu
 {
-  NSLog(@"update");
-  
   if(mRuning)
   {
-    NSLog(@"running");
-    
     [mStatusItem setLength:55.0];
     [mStatusItem setImage:nil];
     [mStatusItem setAlternateImage:nil];
@@ -134,8 +135,6 @@
   }
   else
   {
-    NSLog(@"nawt running");
-    
     [mStatusItem setLength:NSSquareStatusItemLength];
     [mStatusItem setImage:[NSImage imageNamed:@"mono"]];
     [mStatusItem setAlternateImage:[NSImage imageNamed:@"mono-inverted"]];
@@ -145,15 +144,11 @@
     
     if(mElapsedTime == 0.0)
     {
-      NSLog(@"0.0");
-      
       [mStartPauseItem setTitle:@"Start"];
       [mStartPauseItem setAttributedTitle:nil];
     }
     else
     {
-      NSLog(@"nawt 0.0");
-      
       NSMutableAttributedString *attrString =
           [[[NSMutableAttributedString alloc]
           initWithString:@"Continue  03:21"] autorelease];
@@ -182,7 +177,6 @@
   [mStartPauseItem setTarget:self];
   [mStartPauseItem retain];
 
-  
   mResetItem = [menu addItemWithTitle:@"Reset"
     action:@selector(resetElapsedTimeAction:)
     keyEquivalent:@""];
