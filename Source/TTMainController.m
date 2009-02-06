@@ -22,6 +22,8 @@
  * TTMainController.m, created on 2009-Feb-06.
  */
 
+#include <math.h>
+
 #import "TTMainController.h"
 
 
@@ -121,12 +123,16 @@
 
 - (void)updateMenu
 {
+  int minutes = round(mElapsedTime/60.0);
+  int hours   = round(mElapsedTime/60.0/60.0);
+
   if(mRuning)
   {
     [mStatusItem setLength:55.0];
     [mStatusItem setImage:nil];
     [mStatusItem setAlternateImage:nil];
-    [mStatusItem setTitle:@"00:00"];
+    [mStatusItem setTitle:
+        [NSString stringWithFormat:@"%02d:%02d", hours, minutes]];
     
     [mResetItem setEnabled:NO];
     
@@ -151,7 +157,9 @@
     {
       NSMutableAttributedString *attrString =
           [[[NSMutableAttributedString alloc]
-          initWithString:@"Continue  03:21"] autorelease];
+          initWithString:
+            [NSString stringWithFormat:@"Continue  %02d:%02d", hours, minutes]
+          ] autorelease];
       
       [attrString addAttribute:NSForegroundColorAttributeName
           value:[NSColor grayColor] range:NSMakeRange(10, 5)];
