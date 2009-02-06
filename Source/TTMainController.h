@@ -19,20 +19,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * main.m, created on 2009-Feb-06.
+ * TTMainController.h, created on 2009-Feb-06.
  */
 
 #import <Cocoa/Cocoa.h>
 
-#import "TTMainController.h"
 
+@interface TTMainController : NSObject {
 
-int main(int argc, char **argv)
-{
-  [[NSAutoreleasePool alloc] init];
-  [NSApplication sharedApplication];
-  
-  TTMainController *ctrlr = [[TTMainController alloc] init];
-  [NSApp setDelegate:ctrlr];
-  [NSApp run];
 }
+
+@end
