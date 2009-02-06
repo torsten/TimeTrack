@@ -25,7 +25,11 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface TTMainController : NSObject {
+@interface TTMainController : NSObject
+{
+  
+@private
+    NSStatusItem *_statusItem;
 
 }
 

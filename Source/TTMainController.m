@@ -31,9 +31,62 @@
 #pragma mark NSApplication Delegate
 
 
+- (void) openWebsite:(id)sender {
+  NSURL *url = [NSURL URLWithString:@"http://th30z.netsons.org"];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+  [url release];
+}
+
+- (void) openFinder:(id)sender {
+  [[NSWorkspace sharedWorkspace] launchApplication:@"Finder"];
+}
+
+- (void) actionQuit:(id)sender {
+  [NSApp terminate:sender];
+}
+
+- (NSMenu *) createMenu {
+  NSZone *menuZone = [NSMenu menuZone];
+  NSMenu *menu = [[NSMenu allocWithZone:menuZone] init];
+  NSMenuItem *menuItem;
+
+  // Add To Items
+  menuItem = [menu addItemWithTitle:@"Open Website"
+    action:@selector(openWebsite:)
+    keyEquivalent:@""];
+  [menuItem setTarget:self];
+
+  menuItem = [menu addItemWithTitle:@"Open Finder"
+    action:@selector(openFinder:)
+    keyEquivalent:@""];
+  [menuItem setTarget:self];
+
+  // Add Separator
+  [menu addItem:[NSMenuItem separatorItem]];
+
+  // Add Quit Action
+  menuItem = [menu addItemWithTitle:@"Quit"
+    action:@selector(actionQuit:)
+    keyEquivalent:@""];
+  [menuItem setToolTip:@"Click to Quit this App"];
+  [menuItem setTarget:self];
+
+  return menu;
+}
+
 - (void) applicationDidFinishLaunching:(NSNotification *)pNotification
 {
-  NSLog(@"finish'd...");
+  NSMenu *menu = [self createMenu];
+
+  _statusItem = [[[NSStatusBar systemStatusBar]
+    statusItemWithLength:55.0] retain];
+  [_statusItem setMenu:menu];
+  [_statusItem setHighlightMode:YES];
+  [_statusItem setToolTip:@"Test Tray"];
+  // [_statusItem setImage:[NSImage imageNamed:@"trayIcon"]];
+  [_statusItem setTitle:@"02:45"];
+
+  [menu release];
 }
 
 
