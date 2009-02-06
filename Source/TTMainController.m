@@ -38,6 +38,7 @@
   {
     mElapsedTime = 0.0;
     mRuning = NO;
+    mTimer = nil;
   }
   return self;
 }
@@ -88,9 +89,9 @@
 - (void)quitAction:(id)pSender
 {
   if(mRuning)
-  {
-    // TODO: save state
-  }
+    [self stopTimer];
+
+  [self saveDefaults];
   
   [NSApp terminate:pSender];
 }
@@ -100,21 +101,20 @@
   if(mRuning)
   {
     mRuning = NO;
-    // Stop timer
+    [self stopTimer];
   }
   else
   {
-    // Start timer
+    [self startTimer];
     mRuning = YES;
   }
   
   [self updateMenu];
-  
 }
 
 - (void)resetElapsedTimeAction:(id)pSender
 {
-  // [self stopTimer];
+  [self stopTimer];
   mElapsedTime = 0.0;
   
   [self saveDefaults];
@@ -123,16 +123,12 @@
 
 - (void)updateMenu
 {
-  int hours   = floor(mElapsedTime/60.0/60.0);
-  int minutes = round((mElapsedTime-((hours*60)*60.0))/60.0);
-  
   if(mRuning)
   {
     [mStatusItem setLength:55.0];
     [mStatusItem setImage:nil];
     [mStatusItem setAlternateImage:nil];
-    [mStatusItem setTitle:
-        [NSString stringWithFormat:@"%02d:%02d", hours, minutes]];
+    [mStatusItem setTitle:[self elapsedTimeAsString]];
     
     [mResetItem setEnabled:NO];
     
@@ -158,8 +154,8 @@
       NSMutableAttributedString *attrString =
           [[[NSMutableAttributedString alloc]
           initWithString:
-            [NSString stringWithFormat:@"Continue  %02d:%02d", hours, minutes]
-          ] autorelease];
+            [NSString stringWithFormat:@"Continue  %@",
+              [self elapsedTimeAsString]]] autorelease];
       
       [attrString addAttribute:NSForegroundColorAttributeName
           value:[NSColor grayColor] range:NSMakeRange(10, 5)];
@@ -203,6 +199,44 @@
   return menu;
 }
 
+- (void)startTimer
+{
+  mTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+      target:self
+      selector:@selector(timerTick:)
+      userInfo:nil
+      repeats:YES];
+  
+  mElapsedTime += 0.001;
+  
+  [mTimer retain];
+}
 
+- (void)stopTimer
+{
+  if(mTimer == nil)
+    return;
+  
+  [mTimer invalidate];
+  [mTimer autorelease];
+  
+  mTimer = nil;
+}
+
+- (void)timerTick:(NSTimer*)pTimer
+{
+  NSLog(@"tick");
+  mElapsedTime += [pTimer timeInterval];
+  
+  [mStatusItem setTitle:[self elapsedTimeAsString]];
+}
+
+- (NSString*)elapsedTimeAsString;
+{
+  int hours   = floor(mElapsedTime/60.0/60.0);
+  int minutes = round((mElapsedTime-((hours*60)*60.0))/60.0);
+  
+  return [NSString stringWithFormat:@"%02d:%02d", hours, minutes];
+}
 
 @end

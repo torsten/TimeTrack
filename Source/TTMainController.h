@@ -32,12 +32,15 @@
   NSMenuItem *mStartPauseItem;
   NSMenuItem *mResetItem;
   BOOL mRuning;
+  NSTimer *mTimer;
 }
 
 - (void)readDefaults;
 - (void)saveDefaults;
 - (void)updateMenu;
 - (NSMenu *)createMenu;
-
+- (void)startTimer;
+- (void)stopTimer;
+- (NSString*)elapsedTimeAsString;
 
 @end
