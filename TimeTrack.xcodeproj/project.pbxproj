@@ -12,6 +12,7 @@
 		E56694170F3C88A900A318BC /* TTMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56694160F3C88A900A318BC /* TTMainController.m */; };
 		E56694310F3C9E7600A318BC /* mono.png in Resources */ = {isa = PBXBuildFile; fileRef = E56694300F3C9E7600A318BC /* mono.png */; };
 		E56694350F3C9F0000A318BC /* mono-inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = E56694340F3C9F0000A318BC /* mono-inverted.png */; };
+		E56695510F3CC84900A318BC /* TimeTrack.icns in Resources */ = {isa = PBXBuildFile; fileRef = E56695500F3CC84900A318BC /* TimeTrack.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		E56694160F3C88A900A318BC /* TTMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTMainController.m; path = Source/TTMainController.m; sourceTree = SOURCE_ROOT; };
 		E56694300F3C9E7600A318BC /* mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mono.png; path = Icon/mono.png; sourceTree = SOURCE_ROOT; };
 		E56694340F3C9F0000A318BC /* mono-inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mono-inverted.png"; path = "Icon/mono-inverted.png"; sourceTree = SOURCE_ROOT; };
+		E56695500F3CC84900A318BC /* TimeTrack.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TimeTrack.icns; path = Icon/TimeTrack.icns; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E56695500F3CC84900A318BC /* TimeTrack.icns */,
 				E56694340F3C9F0000A318BC /* mono-inverted.png */,
 				E56694300F3C9E7600A318BC /* mono.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -161,6 +164,7 @@
 			files = (
 				E56694310F3C9E7600A318BC /* mono.png in Resources */,
 				E56694350F3C9F0000A318BC /* mono-inverted.png in Resources */,
+				E56695510F3CC84900A318BC /* TimeTrack.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

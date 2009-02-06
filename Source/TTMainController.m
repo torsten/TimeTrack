@@ -102,6 +102,7 @@
   {
     mRuning = NO;
     [self stopTimer];
+    [self saveDefaults];
   }
   else
   {
