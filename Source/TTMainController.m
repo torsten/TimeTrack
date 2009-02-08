@@ -60,9 +60,27 @@
   [mStatusItem setHighlightMode:YES];
   [mStatusItem setToolTip:@"TimeTrack"];
   
+  [self registerAtNotificationCenter];
+  
   [self updateMenu];
 }
 
+
+#pragma mark Own Methods
+
+
+- (void)registerAtNotificationCenter
+{
+  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+      selector:@selector(screensaverDidStart)
+      name:@"com.apple.screensaver.didstart"
+      object:nil];
+}
+
+- (void)screensaverDidStart
+{
+  [self enableTimer:NO];
+}
 
 - (void)readDefaults
 {
@@ -89,36 +107,66 @@
 - (void)quitAction:(id)pSender
 {
   if(mRuning)
-    [self stopTimer];
-
-  [self saveDefaults];
+    [self enableTimer:NO];
   
   [NSApp terminate:pSender];
 }
 
-- (void)startOrPauseTimerAction:(id)pSender
+- (void)enableTimer:(BOOL)pEnable
 {
-  if(mRuning)
+  if(pEnable)
   {
-    mRuning = NO;
-    [self stopTimer];
-    [self saveDefaults];
+    if(mRuning || mTimer != nil)
+      [self enableTimer:NO];
+    
+    mTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+        target:self
+        selector:@selector(timerTick:)
+        userInfo:nil
+        repeats:YES];
+    
+    mElapsedTime += 0.001;
+    
+    [mTimer retain];
+    
+    mRuning = YES;
   }
   else
   {
-    [self startTimer];
-    mRuning = YES;
+    mRuning = NO;
+    
+    if(mTimer == nil)
+      return;
+
+    [mTimer invalidate];
+    [mTimer autorelease];
+
+    mTimer = nil;
+    
+    [self saveDefaults];
   }
   
   [self updateMenu];
 }
 
+- (void)startOrPauseTimerAction:(id)pSender
+{
+  // Pause
+  if(mRuning)
+    [self enableTimer:NO];
+  
+  // Start
+  else
+    [self enableTimer:YES];
+}
+
 - (void)resetElapsedTimeAction:(id)pSender
 {
-  [self stopTimer];
-  mElapsedTime = 0.0;
+  [self enableTimer:NO];
   
+  mElapsedTime = 0.0;
   [self saveDefaults];
+  
   [self updateMenu];
 }
 
@@ -198,30 +246,6 @@
   [menuItem setTarget:self];
   
   return menu;
-}
-
-- (void)startTimer
-{
-  mTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
-      target:self
-      selector:@selector(timerTick:)
-      userInfo:nil
-      repeats:YES];
-  
-  mElapsedTime += 0.001;
-  
-  [mTimer retain];
-}
-
-- (void)stopTimer
-{
-  if(mTimer == nil)
-    return;
-  
-  [mTimer invalidate];
-  [mTimer autorelease];
-  
-  mTimer = nil;
 }
 
 - (void)timerTick:(NSTimer*)pTimer

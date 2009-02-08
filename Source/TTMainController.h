@@ -39,8 +39,8 @@
 - (void)saveDefaults;
 - (void)updateMenu;
 - (NSMenu *)createMenu;
-- (void)startTimer;
-- (void)stopTimer;
+- (void)enableTimer:(BOOL)enable;
 - (NSString*)elapsedTimeAsString;
+- (void)registerAtNotificationCenter;
 
 @end
