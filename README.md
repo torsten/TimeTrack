@@ -5,7 +5,7 @@ A *minimalist* time tracking app for Mac OS X 10.5+ which lives in your menu bar
 
 ## Screenshots
 
-<img src="InitialState.png"> &nbsp; &nbsp; <img src="RunningState.png">
+<img src="https://github.com/torsten/TimeTrack/raw/master/InitialState.png"> &nbsp; &nbsp; <img src="https://github.com/torsten/TimeTrack/raw/master/RunningState.png">
 
 
 ## Features
@@ -20,7 +20,7 @@ A *minimalist* time tracking app for Mac OS X 10.5+ which lives in your menu bar
 
 ## Download
 
-[From GitHub](http://.....zip)
+[From GitHub](https://github.com/downloads/torsten/TimeTrack/TimeTrack-v1.zip)
 
 
 ## Author
