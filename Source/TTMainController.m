@@ -258,7 +258,7 @@
 - (NSString*)elapsedTimeAsString;
 {
   int hours   = floor(mElapsedTime/60.0/60.0);
-  int minutes = round((mElapsedTime-((hours*60)*60.0))/60.0);
+  int minutes = floor((mElapsedTime-((hours*60)*60.0))/60.0);
   
   return [NSString stringWithFormat:@"%02d:%02d", hours, minutes];
 }
